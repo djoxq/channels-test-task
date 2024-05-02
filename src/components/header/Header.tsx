@@ -1,19 +1,22 @@
 import React from 'react';
-import styles from './Header.module.css';
+import { Link } from 'react-router-dom';
 import Container from '../container';
+import styles from './Header.module.css';
 
 const Header: React.FC = () => {
   return (
     <header className={styles.header}>
       <Container className={styles.headerContent}>
         <div className={styles.logo}>
-          <img src="/vite.svg" alt="Logo" />
+          <Link to="/">
+            <img src="/vite.svg" alt="Logo" />
+          </Link>
         </div>
         <nav className={styles.navigation}>
           <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/about">About</a></li>
-            <li><a href="/contact">Contact</a></li>
+            <li><Link to="/">Home</Link></li>
+            <li><Link to="/about">About</Link></li>
+            <li><Link to="/contact">Contact</Link></li>
           </ul>
         </nav>
       </Container>

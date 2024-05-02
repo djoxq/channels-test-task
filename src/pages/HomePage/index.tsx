@@ -4,8 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import Container from '../../components/container';
 import Table from '../../components/table';
 import Hero from '../../components/hero';
+import Input from '../../components/input';
+import Button from '../../components/button';
 
 interface University {
+  id: number;
   name: string;
   country: string;
   web_pages: string[];
@@ -16,6 +19,7 @@ const HomePage: React.FC = () => {
   const [universities, setUniversities] = useState<University[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortAlpha, setSortAlpha] = useState(false);
+  const [deletingId, setDeletingId] = useState<number | null>(null);
 
   const navigate = useNavigate();
 
@@ -24,7 +28,13 @@ const HomePage: React.FC = () => {
       try {
         const response = await fetch('http://universities.hipolabs.com/search?country=United%20Arab%20Emirates');
         const data: University[] = await response.json();
-        setUniversities(data);
+
+        setUniversities(data.map((item, idx) => {
+          return {
+            ...item,
+            id: idx + 1,
+          }
+        }));
       } catch (error) {
         console.error('Failed to fetch data:', error);
       }
@@ -60,9 +70,14 @@ const HomePage: React.FC = () => {
     return sortAlpha ? processedList.sort((a, b) => a.name.localeCompare(b.name)) : processedList;
   }, [universities, searchTerm, sortAlpha]);
 
-  const handleActionClick = (action: string, index: number) => {
+  const handleActionClick = (action: string, id: number) => {
     if (action === 'delete') {
-      console.log(`id ${index}`);
+      setDeletingId(id);
+
+      setTimeout(() => {
+        setUniversities(prevData => prevData.filter(d => d.id !== id));
+        setDeletingId(null);
+      }, 300);
     }
   };
 
@@ -73,15 +88,17 @@ const HomePage: React.FC = () => {
   return (
     <Container>
       <Hero title="Universities in UAE" />
-      <input
-        type="text"
-        value={searchTerm}
-        onChange={handleSearch}
-        placeholder="Search universities"
-      />
-      <button onClick={toggleSort}>{sortAlpha ? 'Unsort' : 'Sort'}</button>
+      <div className="filter-container">
+        <Input
+          value={searchTerm}
+          onChange={handleSearch}
+          placeholder="Search universities"
+        />
+        <Button onClick={toggleSort} uiType={sortAlpha ? 'primary' : 'secondary'}>Sort</Button>
+      </div>
 
       <Table
+        deletingId={deletingId}
         data={items}
         columns={columns}
         actions={['delete']}

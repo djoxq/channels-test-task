@@ -1,5 +1,5 @@
 .header {
-  background-color: var(--background-color-header);
+  background-color: var(--color-background-alt);
   box-shadow: 0 .2rem .4rem 0 rgba(0,0,0,.1),inset 0 -.005rem 0 0 rgba(0,0,0,.2);
   height: 80px;
   padding: 2.5px 0;
@@ -32,7 +32,7 @@
   line-height: 64px;
   font-size: 14px;
   font-weight: 500;
-  color: rgba(255, 255, 245, .86);
+  color: var(--color-text-1);
   transition: color .25s;
   text-decoration: none;
 }

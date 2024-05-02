@@ -1,5 +1,23 @@
 .container {
+  width: 100%;
   max-width: 1200px;
-  padding: 0 10px;
   margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
+
+  @media (max-width: 1200px) {
+    max-width: 90%;
+  }
+
+  @media (max-width: 992px) {
+    max-width: 85%;
+  }
+
+  @media (max-width: 768px) {
+    max-width: 80%;
+  }
+
+  @media (max-width: 576px) {
+    max-width: 100%;
+  }
 }
