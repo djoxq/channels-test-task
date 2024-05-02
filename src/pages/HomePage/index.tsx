@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import Container from '../../components/container';
 import Table from '../../components/table';
+import Hero from '../../components/hero';
 
 interface University {
   name: string;
@@ -10,17 +11,6 @@ interface University {
   web_pages: string[];
   alpha_two_code: string;
 }
-
-const columns = {
-  name: {
-    id: 'name',
-    title: 'Name',
-  },
-  state: {
-    id: 'state-province',
-    title: 'State'
-  }
-};
 
 const HomePage: React.FC = () => {
   const [universities, setUniversities] = useState<University[]>([]);
@@ -50,6 +40,15 @@ const HomePage: React.FC = () => {
     setSortAlpha(!sortAlpha);
   };
 
+  const columns = {
+    name: {
+      title: 'Name',
+    },
+    'state-province': {
+      title: 'State'
+    }
+  };
+
   const items = useMemo(() => {
     const processedList = universities.filter(uni => {
       if (searchTerm) {
@@ -73,7 +72,7 @@ const HomePage: React.FC = () => {
 
   return (
     <Container>
-      <h1>Universities in UAE</h1>
+      <Hero title="Universities in UAE" />
       <input
         type="text"
         value={searchTerm}

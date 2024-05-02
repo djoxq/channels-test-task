@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from './Container.module.css';
 
 interface ContainerProps {
   children: React.ReactNode;
@@ -6,7 +7,7 @@ interface ContainerProps {
 }
 
 const Container: React.FC<ContainerProps> = ({ children, className }) => {
-  return <div className={`container ${className}`} style={{ padding: '0 20px', maxWidth: '1200px', margin: '0 auto' }}>{children}</div>;
+  return <div className={`${styles.container} ${className}`}>{children}</div>;
 };
 
 export default Container;

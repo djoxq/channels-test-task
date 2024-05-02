@@ -2,7 +2,6 @@ import React from 'react';
 import styles from './Table.module.css';
 
 interface Column {
-  id: string;
   title: string;
 }
 
@@ -23,12 +22,12 @@ const Table: React.FC<TableProps> = ({ data, columns, actions, onRowClick, onAct
 
   return (
     <table className={styles.table}>
-      <thead className={styles.thead}>
+      <thead>
       <tr className={styles.tr}>
         {columnKeys.map((key) => (
-          <th key={key}>{columns[key].title}</th>
+          <th key={key} className={styles.th}>{columns[key].title}</th>
         ))}
-        {actions && actions.length > 0 && <th>Actions</th>}
+        {actions && actions.length > 0 && <th className={styles.th}>Actions</th>}
       </tr>
       </thead>
       <tbody>
@@ -40,9 +39,9 @@ const Table: React.FC<TableProps> = ({ data, columns, actions, onRowClick, onAct
             </td>
           ))}
           {actions && (
-            <td>
+            <td className={styles.td}>
               {actions.map((action, idx) => (
-                <button key={idx} className={styles.button} onClick={(e) => { e.stopPropagation(); onActionClick?.(action, index); }}>
+                <button key={idx} onClick={(e) => { e.stopPropagation(); onActionClick?.(action, index); }}>
                   {action}
                 </button>
               ))}

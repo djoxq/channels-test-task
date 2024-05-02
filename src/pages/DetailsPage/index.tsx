@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import Container from '../../components/container';
+import Hero from '../../components/hero';
 
 const DetailsPage: React.FC = () => {
   const location = useLocation();
@@ -8,7 +9,7 @@ const DetailsPage: React.FC = () => {
 
   return (
     <Container>
-      <h1>University Details</h1>
+      <Hero title="University Details" />
       {university ? (
         <div>
           <h2>{university.name}</h2>
