@@ -2,6 +2,8 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import Container from '../../components/container';
 import Hero from '../../components/hero';
+import Listing from '../../components/listing';
+import PaperCard from '../../components/paper-card';
 
 const DetailsPage: React.FC = () => {
   const location = useLocation();
@@ -9,14 +11,28 @@ const DetailsPage: React.FC = () => {
 
   return (
     <Container>
-      <Hero title="University Details" />
+      <Hero
+        title="University Details"
+        breadcrumb={[
+          {
+            label: 'Home',
+            path: '/'
+          },
+          {
+            label: 'Details',
+          }
+        ]}
+      />
+
       {university ? (
-        <div>
-          <h2>{university.name}</h2>
-          <p><strong>Country:</strong> {university.country}</p>
-          <p><strong>Code:</strong> {university.alpha_two_code}</p>
-          <p><strong>Website:</strong> <a href={university.web_pages[0]} target="_blank" rel="noopener noreferrer">{university.web_pages[0]}</a></p>
-        </div>
+        <PaperCard>
+          <Listing
+            name={university.name}
+            country={university.country}
+            code={university.alpha_two_code}
+            website={university.web_pages[0]}
+          />
+        </PaperCard>
       ) : (
         <p>No university data available.</p>
       )}

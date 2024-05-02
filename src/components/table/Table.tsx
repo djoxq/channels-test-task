@@ -9,18 +9,21 @@ const actionToIconMapping: Record<string, React.FC> = {
 
 interface Column {
   title: string;
+  sortable?: boolean;
 }
 
 interface TableProps {
   data: Array<{ [key: string]: any }>;
   columns: { [key: string]: Column };
+  sortedColumns: any;
   deletingId: number | null;
   actions?: string[];
   onRowClick?: (item: any) => void;
   onActionClick?: (action: string, id: number) => void;
+  onSort?: (field: string) => void;
 }
 
-const Table: React.FC<TableProps> = ({ deletingId, data, columns, actions, onRowClick, onActionClick }) => {
+const Table: React.FC<TableProps> = ({ deletingId, data, columns, sortedColumns, actions, onRowClick, onActionClick, onSort }) => {
   if (data.length === 0) {
     return <div className={styles.noData}>No data available</div>;
   }
@@ -33,7 +36,12 @@ const Table: React.FC<TableProps> = ({ deletingId, data, columns, actions, onRow
         <thead>
         <tr className={styles.tr}>
           {columnKeys.map((key) => (
-            <th key={key} className={styles.th}>{columns[key].title}</th>
+            <th
+              onClick={() => columns[key].sortable && onSort?.(key)}
+              key={key}
+              className={`${styles.th} ${columns[key].sortable && styles.sortable}`}
+            >
+              {columns[key].title} {columns[key].sortable && <span>{sortedColumns?.field === key ? (sortedColumns.asc ? <>&#8595;</> : <>&#8593;</> ) : <>&#8595;&#8593;</>}</span>}</th>
           ))}
           {actions && actions.length > 0 && <th className={`${styles.th} ${styles.thAction}`}>Actions</th>}
         </tr>

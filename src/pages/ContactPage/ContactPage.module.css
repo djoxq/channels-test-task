@@ -1,0 +1,35 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.inputGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.inputGroup label {
+  flex: 1 1 45%;
+}
+
+.labelFull {
+  flex: 1 1 100%;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  .inputGroup label {
+    flex: 1 1 100%;
+  }
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 16px;
+  color: var(--color-text-1);
+}

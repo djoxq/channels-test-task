@@ -1,24 +1,16 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Container from '../../components/container';
 import Table from '../../components/table';
 import Hero from '../../components/hero';
 import Input from '../../components/input';
-import Button from '../../components/button';
-
-interface University {
-  id: number;
-  name: string;
-  country: string;
-  web_pages: string[];
-  alpha_two_code: string;
-}
+import {University, SortState, UniversityField} from '../../@types';
 
 const HomePage: React.FC = () => {
   const [universities, setUniversities] = useState<University[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [sortAlpha, setSortAlpha] = useState(false);
+  const [sortAlpha, setSortAlpha] = useState<SortState>(null);
   const [deletingId, setDeletingId] = useState<number | null>(null);
 
   const navigate = useNavigate();
@@ -46,13 +38,10 @@ const HomePage: React.FC = () => {
     setSearchTerm(event.target.value);
   };
 
-  const toggleSort = () => {
-    setSortAlpha(!sortAlpha);
-  };
-
   const columns = {
     name: {
       title: 'Name',
+      sortable: true,
     },
     'state-province': {
       title: 'State'
@@ -60,6 +49,8 @@ const HomePage: React.FC = () => {
   };
 
   const items = useMemo(() => {
+    const field: Omit<UniversityField, 'id' | 'web_pages'> = sortAlpha?.field;
+
     const processedList = universities.filter(uni => {
       if (searchTerm) {
         return uni.name.toLowerCase().includes(searchTerm.toLowerCase());
@@ -67,7 +58,13 @@ const HomePage: React.FC = () => {
       return true;
     });
 
-    return sortAlpha ? processedList.sort((a, b) => a.name.localeCompare(b.name)) : processedList;
+    if (field) {
+      return processedList.sort(
+        (a, b) => sortAlpha?.asc ? a[field]?.localeCompare(b[field]) : b[field]?.localeCompare(a[field])
+      )
+    }
+
+    return processedList;
   }, [universities, searchTerm, sortAlpha]);
 
   const handleActionClick = (action: string, id: number) => {
@@ -85,23 +82,39 @@ const HomePage: React.FC = () => {
     navigate('/details', { state: { university } });
   };
 
+  const handleSort = (field: UniversityField) => {
+    setSortAlpha(prevState => ({
+      field,
+      asc: prevState?.field === field ? !prevState.asc : true
+    }) as SortState)
+  }
+
   return (
     <Container>
-      <Hero title="Universities in UAE" />
+      <Hero
+        title="Universities in UAE"
+        breadcrumb={[
+          {
+            label: 'Home',
+            path: '/'
+          }
+        ]}
+      />
       <div className="filter-container">
         <Input
           value={searchTerm}
           onChange={handleSearch}
           placeholder="Search universities"
         />
-        <Button onClick={toggleSort} uiType={sortAlpha ? 'primary' : 'secondary'}>Sort</Button>
       </div>
 
       <Table
         deletingId={deletingId}
         data={items}
         columns={columns}
+        sortedColumns={sortAlpha}
         actions={['delete']}
+        onSort={handleSort}
         onRowClick={handleRowClick}
         onActionClick={handleActionClick}
       />
