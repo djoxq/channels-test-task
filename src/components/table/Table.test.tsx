@@ -13,7 +13,7 @@ describe('<Table />', () => {
 
   it('renders data correctly and responds to row click', () => {
     const mockOnRowClick = jest.fn();
-    render(<Table deletingId={null} sortedColumns={null} data={data} columns={columns} actions={actions} onRowClick={mockOnRowClick} />);
+    render(<Table deletingId={null} data={data} columns={columns} actions={actions} onRowClick={mockOnRowClick} />);
 
     const rows = screen.getAllByRole('row');
     fireEvent.click(rows[1]);
