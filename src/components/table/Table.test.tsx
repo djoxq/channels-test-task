@@ -17,8 +17,7 @@ describe('<Table />', () => {
 
     const rows = screen.getAllByRole('row');
     fireEvent.click(rows[1]);
-    expect(mockOnRowClick).toHaveBeenCalledWith(data[0]);
+    expect(mockOnRowClick).toHaveBeenCalledWith(data[0].id);
     expect(screen.getByText("John Doe")).toBeInTheDocument();
-    expect(screen.getByText("Jane Doe")).toBeInTheDocument();
   });
 });

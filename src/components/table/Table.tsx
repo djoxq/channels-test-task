@@ -12,16 +12,16 @@ interface Column {
   sortable?: boolean;
 }
 
-interface TableProps {
-  data: Array<{ [key: string]: any }>;
+interface TableProps<T> {
+  data: T[];
   columns: { [key: string]: Column };
   deletingId: number | null;
   actions?: string[];
-  onRowClick?: (item: any) => void;
+  onRowClick?: (id: number) => void;
   onActionClick?: (action: string, id: number) => void;
 }
 
-const Table: React.FC<TableProps> = ({ deletingId, data, columns, actions, onRowClick, onActionClick }) => {
+const Table = <T extends { [key: string]: any },>({ deletingId, data, columns, actions, onRowClick, onActionClick }: TableProps<T>) => {
   const [sortConfig, setSortConfig] = useState<{ field: string; direction: 'ascending' | 'descending' } | null>(null);
 
   const sortedData = useMemo(() => {
@@ -77,7 +77,7 @@ const Table: React.FC<TableProps> = ({ deletingId, data, columns, actions, onRow
         </thead>
         <tbody>
         {sortedData.map((item, index) => (
-          <tr key={index} onClick={() => onRowClick?.(item)}
+          <tr key={index} onClick={() => onRowClick?.(item.id)}
               className={`${styles.tableRow} ${item.id === deletingId ? styles.fadeOut : ''}`}>
             {columnKeys.map((key) => (
               <td key={`${key}-${item.id}`} className={styles.td}>

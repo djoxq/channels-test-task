@@ -6,9 +6,10 @@ import Table from '../../components/table';
 import Hero from '../../components/hero';
 import Input from '../../components/input';
 import { University } from '../../@types';
+import useLocalStorage  from '../../hooks/useLocalStorage';
 
 const HomePage: React.FC = () => {
-  const [universities, setUniversities] = useState<University[]>([]);
+  const [universities, setUniversities] = useLocalStorage<University[]>('universitites', []);
   const [searchTerm, setSearchTerm] = useState('');
   const [deletingId, setDeletingId] = useState<number | null>(null);
 
@@ -31,7 +32,7 @@ const HomePage: React.FC = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [setUniversities]);
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -67,7 +68,9 @@ const HomePage: React.FC = () => {
     }
   };
 
-  const handleRowClick = (university: University) => {
+  const handleRowClick = (id: number) => {
+    const university = universities.find(d => d.id === id);
+  
     navigate('/details', { state: { university } });
   };
 
