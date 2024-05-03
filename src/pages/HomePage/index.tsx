@@ -6,9 +6,10 @@ import Table from '../../components/table';
 import Hero from '../../components/hero';
 import Input from '../../components/input';
 import {University, SortState, UniversityField} from '../../@types';
+import useLocalStorage from "../../hooks/useLocalStorage";
 
 const HomePage: React.FC = () => {
-  const [universities, setUniversities] = useState<University[]>([]);
+  const [universities, setUniversities] = useLocalStorage<University[]>('universities', []);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortAlpha, setSortAlpha] = useState<SortState>(null);
   const [deletingId, setDeletingId] = useState<number | null>(null);
@@ -32,7 +33,7 @@ const HomePage: React.FC = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [setUniversities]);
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
